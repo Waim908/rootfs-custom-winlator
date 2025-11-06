@@ -1,4 +1,4 @@
-mkdir /data/data/com.winlator/files/rootfs/
+mkdir -p /data/data/com.winlator/files/rootfs/
 cd /tmp
 if ! wget https://github.com/Waim908/rootfs-custom-winlator/releases/download/ori-b11.0/rootfs.tzst; then
 	exit 1
@@ -14,7 +14,7 @@ cd /tmp
 git clone https://github.com/tukaani-project/xz.git xz-src
 git clone https://github.com/xiph/vorbis.git vorbis-src
 #git clone https://github.com/xiph/opus.git opus-src
-git clone -b $gstVer https://github.com/GStreamer/gstreamer.git gst-src
+git clone -b $1 https://github.com/GStreamer/gstreamer.git gst-src
 
 # Build
 echo "Build and Compile xz(liblzma)"

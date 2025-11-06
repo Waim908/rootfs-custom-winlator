@@ -97,3 +97,20 @@ meson setup builddir \
 # CA证书支持
 
 [Mozllia证书](https://curl.haxx.se/ca/cacert.pem)
+
+# 其他
+
+[data.tar.zst=>全编码文件(ubuntu)](http://archive.ubuntu.com/ubuntu/pool/universe/g/glibc/locales-all_2.39-0ubuntu8.6_amd64.deb)
+
+[tzdata-2025b-1-aarch64.pkg.tar.xz=>全时区文件(archlinxu)](https://eu.mirror.archlinuxarm.org/aarch64/core/tzdata-2025b-1-aarch64.pkg.tar.xz)
+
+# 感谢
+
+[winlator](https://github.com/brunodev85/Winlator)
+
+
+# 补全使用的项目
+
+[gstreamer](https://github.com/GStreamer/gstreamer)
+[xz](https://github.com/tukaani-project/xz)
+[vorbis](https://github.com/xiph/vorbis)

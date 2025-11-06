@@ -10,6 +10,14 @@ on:
         description: "输入gstreamer分支版本："
         required: true
         default: "1.27.2"
+      inputXzVersion:
+        description: "输入xz分支版本："
+        required: true
+        default: "5.8.1"
+      inputVorbisVersion:
+        description: "输入vorbis分支版本："
+        required: true
+        default: "v1.3.7"
       inputCustomTag:
         description: "输入自定义Tag名称："
         required: true
@@ -17,6 +25,8 @@ on:
 
 env:
   gstVer: ${{ github.event.inputs.inputGstVersion }}
+  xzVer: ${{ github.event.inputs.inputXzVersion }}
+  vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
 
 jobs:
   BCC:
@@ -35,6 +45,9 @@ jobs:
           # cd /tmp/archlinux/tmp
           # git clone -b ${gstVer} https://gitlab.freedesktop.org/gstreamer/gstreamer.git gstreamer-src
           # cd /tmp
+          echo "export gstVer=$gstVer" > /tmp/archlinux/tmp/init.sh
+          echo "export xzVer=$xzVer" >> /tmp/archlinux/tmp/init.sh
+          echo "export vorbisVer=$vorbosVer" >> /tmp/archlinux/tmp/init.sh
           sudo mount --bind /proc archlinux/proc
           sudo mount --bind /sys archlinux/sys
           sudo mount --bind /dev archlinux/dev
