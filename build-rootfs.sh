@@ -28,6 +28,7 @@ if ! make -j$(nproc); then
   exit 1
 fi
 make install
+cd /tmp/vorbis-src
 echo "Build and Compile vorbis"
 mkdir build
 cd build
@@ -38,8 +39,8 @@ if ! make -j$(nproc); then
   exit 1
 fi
 make install
-echo "Build and Compile gstreamer"
 cd /tmp/gst-src
+echo "Build and Compile gstreamer"
 meson setup builddir \
   --buildtype=release \
   --strip \
