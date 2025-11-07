@@ -20,11 +20,19 @@ if ! wget https://curl.haxx.se/ca/cacert.pem; then
 	exit 1
 fi
 cd /tmp
+rm -rf /data/data/com.winlator/files/rootfs/lib/libgst*
+rm -rf /data/data/com.winlator/files/rootfs/lib/gstreamer-1.0
 #git clone https://github.com/xiph/flac.git flac-src
-git clone -b $xzVer https://github.com/tukaani-project/xz.git xz-src
-git clone  -b $vorbisVer https://github.com/xiph/vorbis.git vorbis-src
+if ! git clone -b $xzVer https://github.com/tukaani-project/xz.git xz-src; then
+  exit 1
+fi
+if ! git clone  -b $vorbisVer https://github.com/xiph/vorbis.git vorbis-src; then
+  exit 1
+fi
 #git clone https://github.com/xiph/opus.git opus-src
-git clone -b $gstVer https://github.com/GStreamer/gstreamer.git gst-src
+if ! git clone -b $gstVer https://github.com/GStreamer/gstreamer.git gst-src; then
+  exit 1
+fi
 
 # Build
 echo "Build and Compile xz(liblzma)"
@@ -43,7 +51,7 @@ cd /tmp/vorbis-src
 echo "Build and Compile vorbis"
 mkdir build
 cd build
-if ! cmake .. -Dprefix=/data/data/com.winlator/files/rootfs/; then
+if ! cmake . -DBUILD_SHARED_LIBS=1 -Dprefix=/data/data/com.winlator/files/rootfs/; then
   exit 1
 fi
 if ! make -j$(nproc); then
@@ -140,5 +148,3 @@ cd /data/data/com.winlator/files/rootfs/
 if ! tar -I 'zstd -T8' -cvf /tmp/output/rootfs.tzst *; then
   exit 1
 fi
-
-
