@@ -21,7 +21,7 @@ on:
       inputCustomTag:
         description: "输入自定义Tag名称："
         required: true
-        default: "beta11-pre"
+        default: "beta11-g2.39"
 
 env:
   gstVer: ${{ github.event.inputs.inputGstVersion }}
