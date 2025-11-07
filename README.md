@@ -75,7 +75,7 @@ meson setup builddir \
   -Dgst-plugins-bad:uvch264=disabled \
   -Dgst-plugins-bad:v4l2codecs=disabled \
   -Dgst-plugins-bad:udev=disabled \
-  -Dgst-plugins-bad:libde265=enabled \
+  -Dgst-plugins-bad:libde265=disabled \
   -Dgst-plugins-bad:smoothstreaming=disabled \
   -Dgst-plugins-bad:fluidsynth=disabled \
   -Dgst-plugins-bad:inter=disabled \
