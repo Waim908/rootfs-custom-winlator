@@ -6,6 +6,7 @@ else
   echo "vorbis=> $vorbisVer"
   echo "xz=> $xzVer"
 fi
+pacman -R --noconfirm libvorbis flac lame
 mkdir -p /data/data/com.winlator/files/rootfs/
 cd /tmp
 if ! wget https://github.com/Waim908/rootfs-custom-winlator/releases/download/ori-b11.0/rootfs.tzst; then
@@ -129,6 +130,8 @@ meson setup builddir \
   -Dgst-plugins-bad:hls=disabled \
   -Dgst-plugins-bad:curl=disabled \
   -Dgst-plugins-bad:opus=disabled \
+  -Dgst-plugins-bad:webrtc=disabled \
+  -Dgst-plugins-bad:webrtcdsp=disabled \
   -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/gstreamer-build)" \
   --prefix=/data/data/com.winlator/files/rootfs/
 if [[ ! -d builddir ]]; then

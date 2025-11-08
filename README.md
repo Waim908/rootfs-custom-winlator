@@ -86,6 +86,8 @@ meson setup builddir \
   -Dgst-plugins-bad:hls=disabled \
   -Dgst-plugins-bad:curl=disabled \
   -Dgst-plugins-bad:opus=disabled \
+  -Dgst-plugins-bad:webrtc=disabled \
+  -Dgst-plugins-bad:webrtcdsp=disabled \
   -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/gstreamer-build)" \
   --prefix=/data/data/com.winlator/files/rootfs/
 ```
@@ -109,6 +111,8 @@ meson setup builddir \
 
 [gstreamer](https://github.com/GStreamer/gstreamer)
 
-[xz](https://github.com/tukaani-project/xz)
+# 以下使用gst子项目完成构建
 
-[vorbis](https://github.com/xiph/vorbis)
+~~[xz](https://github.com/tukaani-project/xz)~~
+
+~~[vorbis](https://github.com/xiph/vorbis)~~
