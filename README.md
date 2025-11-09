@@ -3,7 +3,7 @@ winlator 11 定制版rootfs
 
 # 使用
 
-无论你使用任何修改版本（Winlator 11 beta+ 其他版本未测试），只需要替换掉apk包assets文件夹内的```rootfs.tzst```文件就能享受相比于原版更好的解码效果，如果你不想破坏改版的rootfs结构，请自行解包并解压此仓库Releases的```output-full.tar.xz```(包含了完整的时区文件与所有语音的utf-8编码，但可能没有GBK之类的**特定语言编码**) 或者```output-lite.tar.xz```（不再包含编码与时区文件）到rootfs，然后再使用```zstd```来压缩为rootfs.tzst并自行添加到apk里面
+无论你使用任何修改版本（Winlator 11 beta+ 其他版本未测试），只需要替换掉apk包assets文件夹内的```rootfs.tzst```文件就能享受相比于原版更好的解码效果，如果你不想破坏改版的rootfs结构，请自行解包并解压此仓库Releases的```output-full.tar.xz```(包含了完整的时区文件与所有语言的utf-8编码，但可能没有GBK之类的**特定语言编码**) 或者```output-lite.tar.xz```（不再包含编码与时区文件）到rootfs，然后再使用```zstd```来压缩为rootfs.tzst并自行添加到apk里面
 
 安装完成后无需重装(除非你重新签名导致安装包发生冲突)
 在Winlator主界面，点击左上角菜单，⚙️设置(Setting)=> 滑动到页面最底部=> 重新安装文件系统(Reinstall System Files) => 等待进度条跑完 => 完成！😄
