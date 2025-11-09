@@ -24,9 +24,9 @@ cd /tmp
 if ! wget https://github.com/Waim908/rootfs-custom-winlator/releases/download/ori-b11.0/rootfs.tzst; then
   exit 1
 fi
-#tar -xvf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
-#tar -xvf data.tar.xz -C /data/data/com.winlator/files/rootfs/
-#tar -xvf tzdata-*-.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
+#tar -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
+#tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
+#tar -xf tzdata-*-.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/etc
 mkdir ca-certificates
 if ! wget https://curl.haxx.se/ca/cacert.pem; then
@@ -158,20 +158,20 @@ echo "Package"
 mkdir /tmp/output
 cd /data/data/com.winlator/files/rootfs/
 patchelf_fix
-if ! tar -I 'xz -T8' -cvf /tmp/output/output-lite.xz *; then
+if ! tar -I 'xz -T8' -cf /tmp/output/output-lite.xz *; then
   exit 1
 fi
 cd /tmp
-tar -xvf data.tar.xz -C /data/data/com.winlator/files/rootfs/
-tar -xvf tzdata-*-.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
+tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
+tar -xf tzdata-*-.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
-if ! tar -I 'xz -T8' -cvf /tmp/output/output-full.xz *; then
+if ! tar -I 'xz -T8' -cf /tmp/output/output-full.xz *; then
   exit 1
 fi
 rm -rf /data/data/com.winlator/files/rootfs/*/
-tar -xvf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
-tar -xvf /tmp/output/output-full.xz -C
+tar -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
+tar -xf /tmp/output/output-full.xz -C
 cd /data/data/com.winlator/files/rootfs/
-if ! tar -I 'zstd -T8' -cvf /tmp/output/rootfs.zstd *; then
+if ! tar -I 'zstd -T8' -cf /tmp/output/rootfs.tzst *; then
   exit 1
 fi
