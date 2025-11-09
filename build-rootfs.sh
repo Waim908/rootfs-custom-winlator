@@ -9,7 +9,17 @@ LD_FILE=$LD_RPATH/ld-linux-aarch64.so.1
     }
   done
 }
-
+create_ver_txt () {
+  cat > '/data/data/com.winlator/files/rootfs/_version_.txt' << EOF
+Output Date(UTC+8): $date
+Version:
+  gstreamer=> $gstVer
+  xz=> $xzVer
+  rootfs-tag=> $customTag
+Repo:
+  [Waim908/rootfs-custom-winlator](https://github.com/Waim908/rootfs-custom-winlator)
+EOF
+}
 if [[ ! -f /tmp/init.sh ]]; then
   exit 1
 else
@@ -145,7 +155,7 @@ meson setup builddir \
   -Dgst-plugins-bad:webrtc=disabled \
   -Dgst-plugins-bad:webrtcdsp=disabled \
   -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/gstreamer-build)" \
-  --prefix=/data/data/com.winlator/files/rootfs/
+  --prefix=/data/data/com.winlator/files/rootfs/ || exit 1
 if [[ ! -d builddir ]]; then
   exit 1
 fi
@@ -153,25 +163,29 @@ if ! meson compile -C builddir; then
   exit 1
 fi
 meson install -C builddir
+export date=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')
 # package
 echo "Package"
 mkdir /tmp/output
 cd /data/data/com.winlator/files/rootfs/
 patchelf_fix
+create_ver_txt
 if ! tar -I 'xz -T8' -cf /tmp/output/output-lite.xz *; then
   exit 1
 fi
 cd /tmp
 tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
-tar -xf tzdata-*-.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
+tar -xf tzdata-2025b-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
+create_ver_txt
 if ! tar -I 'xz -T8' -cf /tmp/output/output-full.xz *; then
   exit 1
 fi
 rm -rf /data/data/com.winlator/files/rootfs/*/
 tar -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
-tar -xf /tmp/output/output-full.xz -C
+tar -xf /tmp/output/output-full.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
+create_ver_txt
 if ! tar -I 'zstd -T8' -cf /tmp/output/rootfs.tzst *; then
   exit 1
 fi

@@ -26,6 +26,7 @@ on:
 env:
   gstVer: ${{ github.event.inputs.inputGstVersion }}
   xzVer: ${{ github.event.inputs.inputXzVersion }}
+  customTag: ${{ github.event.inputs.inputCustomTag }}
   # vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
 
 jobs:
@@ -47,9 +48,14 @@ jobs:
           # cd /tmp/archlinux/tmp
           # git clone -b ${gstVer} https://gitlab.freedesktop.org/gstreamer/gstreamer.git gstreamer-src
           # cd /tmp
-          echo "export gstVer=$gstVer" > /tmp/archlinux/tmp/init.sh
-          echo "export xzVer=$xzVer" >> /tmp/archlinux/tmp/init.sh
-          echo "export vorbisVer=$vorbisVer" >> /tmp/archlinux/tmp/init.sh
+          cat > /tmp/archlinux/tmp/init.sh << EOF
+          export gstVer=$gstVer
+          export xzVer=$xzVer
+          export customTag=$customTag
+          EOF
+          # echo "export gstVer=$gstVer" > /tmp/archlinux/tmp/init.sh
+          # echo "export xzVer=$xzVer" >> /tmp/archlinux/tmp/init.sh
+          # echo "export vorbisVer=$vorbisVer" >> /tmp/archlinux/tmp/init.sh
           sudo mount --bind /proc archlinux/proc
           sudo mount --bind /sys archlinux/sys
           sudo mount --bind /dev archlinux/dev
