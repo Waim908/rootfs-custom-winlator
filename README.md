@@ -167,6 +167,8 @@ bilibili:
 
 [xz](https://github.com/tukaani-project/xz)
 
+[xkbcommon](https://github.com/xkbcommon/libxkbcommon)
+
 # 以下使用gst子项目完成构建
 
 ~~[vorbis](https://github.com/xiph/vorbis)~~
