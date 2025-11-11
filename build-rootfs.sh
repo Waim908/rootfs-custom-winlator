@@ -46,7 +46,7 @@ else
   cat /tmp/init.sh
 fi
 pacman -R --noconfirm libvorbis flac lame
-#mkdir -p /data/data/com.winlator/files/rootfs/
+mkdir -p /data/data/com.winlator/files/rootfs/
 create_rootfs_dir() {
   nowPath=$(pwd)
   rootfsDir=/data/data/com.winlator/files/rootfs/
@@ -72,8 +72,6 @@ if ! wget https://curl.haxx.se/ca/cacert.pem; then
   exit 1
 fi
 cd /tmp
-rm -rf /data/data/com.winlator/files/rootfs/lib/libgst*
-rm -rf /data/data/com.winlator/files/rootfs/lib/gstreamer-1.0
 #git clone https://github.com/xiph/flac.git flac-src
 if ! git clone -b $xzVer https://github.com/tukaani-project/xz.git xz-src; then
   exit 1
@@ -242,6 +240,8 @@ create_rootfs_dir
 tar -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
 tar -xf /tmp/output/output-full.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
+rm -rf /data/data/com.winlator/files/rootfs/lib/libgst*
+rm -rf /data/data/com.winlator/files/rootfs/lib/gstreamer-1.0
 create_ver_txt
 if ! tar -I 'zstd -T$(NPROC)' -cf /tmp/output/rootfs.tzst .; then
   exit 1
