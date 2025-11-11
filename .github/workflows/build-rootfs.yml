@@ -62,6 +62,7 @@ jobs:
           export gstVer=$gstVer
           export xzVer=$xzVer
           export xkbcommonVer=$xkbcommonVer
+          export mangohudVer=$mangohudVer
           export customTag=$customTag
           EOF
           # echo "export gstVer=$gstVer" > /tmp/archlinux/tmp/init.sh
