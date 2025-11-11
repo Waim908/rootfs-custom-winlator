@@ -1,6 +1,21 @@
+export RootDirectories=(
+  etc
+  home
+  include
+  libexec
+  opt
+  tmp
+  var
+  share
+  var
+  usr/bin
+  usr/lib
+  usr/share
+  usr/local
+)
 patchelf_fix() {
-LD_RPATH=/data/data/com.winlator/files/rootfs/lib
-LD_FILE=$LD_RPATH/ld-linux-aarch64.so.1
+  LD_RPATH=/data/data/com.winlator/files/rootfs/lib
+  LD_FILE=$LD_RPATH/ld-linux-aarch64.so.1
   find . -type f -exec file {} + | grep -E ":.*ELF" | cut -d: -f1 | while read -r elf_file; do
     echo "Patching $elf_file..."
     patchelf --set-rpath "$LD_RPATH" --set-interpreter "$LD_FILE" "$elf_file" || {
@@ -9,27 +24,41 @@ LD_FILE=$LD_RPATH/ld-linux-aarch64.so.1
     }
   done
 }
-create_ver_txt () {
-  cat > '/data/data/com.winlator/files/rootfs/_version_.txt' << EOF
+create_ver_txt() {
+  cat >'/data/data/com.winlator/files/rootfs/_version_.txt' <<EOF
 Output Date(UTC+8): $date
 Version:
-  gstreamer=> $gstVer
   xz=> $xzVer
+  gstreamer=> $gstVer
+  xkbcommon=> $xkbcommonVer
+  mangohud=> $mangohudVer
   rootfs-tag=> $customTag
 Repo:
   [Waim908/rootfs-custom-winlator](https://github.com/Waim908/rootfs-custom-winlator)
+Others:
+  [CN]任何修改的winlator第三方版本在分发时（非个人使用的分发版本）在内置此项目相关文件后务必声明此仓库链接在发布时或应用内以便于修复
+  [EN]Any modified third-party versions of Winlator distributed (i.e., distribution versions not for personal use) must declare the link to this repository upon release or within the application after incorporating files related to this project, in order to facilitate fixes.
 EOF
 }
 if [[ ! -f /tmp/init.sh ]]; then
   exit 1
 else
-  source /tmp/init.sh
-  echo "gst=> $gstVer"
-  # echo "vorbis=> $vorbisVer"
-  echo "xz=> $xzVer"
+  cat /tmp/init.sh
 fi
 pacman -R --noconfirm libvorbis flac lame
-mkdir -p /data/data/com.winlator/files/rootfs/
+#mkdir -p /data/data/com.winlator/files/rootfs/
+create_rootfs_dir() {
+  nowPath=$(pwd)
+  rootfsDir=/data/data/com.winlator/files/rootfs/
+  for i in ${!RootDirectories[@]}; do
+    mkdir -p $rootfsDir/${a[i]}
+  done
+  cd $rootfsDir
+  ln -sf usr/bin
+  ln -sf usr/lib
+  cd $nowPath
+}
+create_rootfs_dir
 cd /tmp
 if ! wget https://github.com/Waim908/rootfs-custom-winlator/releases/download/ori-b11.0/rootfs.tzst; then
   exit 1
@@ -56,6 +85,33 @@ fi
 if ! git clone -b $gstVer https://github.com/GStreamer/gstreamer.git gst-src; then
   exit 1
 fi
+
+git clone -b $xkbcommonVer https://github.com/xkbcommon/libxkbcommon.git xkbcomon-src || exit 1
+
+git clone -b $mangohudVer https://github.com/flightlessmango/MangoHud.git mangohud-src || exit 1
+
+pip install mako --break-system-package
+
+cd /tmp/xkbcommon-src
+
+meson setup builddir \
+  -Denable-xkbregistry=false \
+  -Denable-bash-completion=false \
+  --prefix=/data/data/com.winlator/files/rootfs/
+meson compile -C builddir || exit 1
+meson install -C builddir
+
+cd /tmp/mangohud-src
+
+meson setup builddir \
+  -Ddynamic_string_tokens=false \
+  -Dwith_xnvctrl=disabled \
+  -Dwith_wayland=disabled \
+  -Dwith_nvml=disabled \
+  -Dinclude_doc=false
+--prefix=/data/data/com.winlator/files/rootfs/ || exit 1
+meson compile -C builddir || exit 1
+meson install -C builddir
 
 # Build
 echo "Build and Compile xz(liblzma)"
@@ -170,7 +226,7 @@ mkdir /tmp/output
 cd /data/data/com.winlator/files/rootfs/
 patchelf_fix
 create_ver_txt
-if ! tar -I 'xz -T8' -cf /tmp/output/output-lite.tar.xz *; then
+if ! tar -I 'xz -T$(NPROC)' -cf /tmp/output/output-lite.tar.xz .; then
   exit 1
 fi
 cd /tmp
@@ -178,14 +234,15 @@ tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
 tar -xf tzdata-2025b-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
 create_ver_txt
-if ! tar -I 'xz -T8' -cf /tmp/output/output-full.tar.xz *; then
+if ! tar -I 'xz -T$(NPROC)' -cf /tmp/output/output-full.tar.xz .; then
   exit 1
 fi
 rm -rf /data/data/com.winlator/files/rootfs/*/
+create_rootfs_dir
 tar -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
 tar -xf /tmp/output/output-full.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
 create_ver_txt
-if ! tar -I 'zstd -T8' -cf /tmp/output/rootfs.tzst *; then
+if ! tar -I 'zstd -T$(NPROC)' -cf /tmp/output/rootfs.tzst .; then
   exit 1
 fi

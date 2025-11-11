@@ -3,7 +3,9 @@ winlator 11 定制版rootfs
 
 # 声明
 
-任何修改的非原版winlator版本在内置此rootfs相关文件后必须声明此仓库以便于修复
+任何修改的winlator第三方版本在分发时（非个人使用的分发版本）在内置此项目相关文件后务必声明此仓库链接在发布时或应用内以便于修复
+
+Any modified third-party versions of Winlator distributed (i.e., distribution versions not for personal use) must declare the link to this repository upon release or within the application after incorporating files related to this project, in order to facilitate fixes.
 
 # 使用
 
@@ -15,6 +17,10 @@ winlator 11 定制版rootfs
 可能需要创建一个容器进行测试，要不然貌似不会创建libGL.so.1的链接
 
 然后你就可以愉快的启动容器来测试解码效果了
+
+# Gstreamer解码调试
+
+声明变量```GST_DEBUG```值为```4```，如果没有输出则是调用其他解码，请在调试中✓上```quartz```,```mfplat```或```dxva2```
 
 # 关于视频解码
 
@@ -107,7 +113,26 @@ meson setup builddir \
   -Dgst-plugins-bad:opus=disabled \
   -Dgst-plugins-bad:webrtc=disabled \
   -Dgst-plugins-bad:webrtcdsp=disabled \
-  -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/gstreamer-build)" \
+  -Dpackage-origin="[gstremaer-build] (https://github.com/Waim908/rootfs-custom-winlator)" \
+  --prefix=/data/data/com.winlator/files/rootfs/
+```
+
+## MangoHud
+```bash
+meson setup builddir \
+  -Ddynamic_string_tokens=false \
+  -Dwith_xnvctrl=disabled \
+  -Dwith_wayland=disabled \
+  -Dwith_nvml=disabled \
+  -Dinclude_doc=false
+  --prefix=/data/data/com.winlator/files/rootfs/
+```
+depend =>
+- ## libxkbcommon
+```bash
+meson setup builddir \
+  -Denable-xkbregistry=false \
+  -Denable-bash-completion=false \
   --prefix=/data/data/com.winlator/files/rootfs/
 ```
 
@@ -138,8 +163,10 @@ bilibili:
 
 [gstreamer](https://github.com/GStreamer/gstreamer)
 
-# 以下使用gst子项目完成构建
+[MangoHud](https://github.com/flightlessmango/MangoHud)
 
-~~[xz](https://github.com/tukaani-project/xz)~~
+[xz](https://github.com/tukaani-project/xz)
+
+# 以下使用gst子项目完成构建
 
 ~~[vorbis](https://github.com/xiph/vorbis)~~

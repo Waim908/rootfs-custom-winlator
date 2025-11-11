@@ -18,6 +18,14 @@ on:
       #   description: "输入vorbis版本："
       #   required: true
       #   default: "v1.3.7"
+      inputXkbcommonVersion:
+        description: "输入xkbcommon的版本："
+        required: true
+        default: "xkbcommon-1.13.0"
+      inputMangohudVersion:
+        description: "请输入MangoHud版本："
+        required: true
+        default: "v0.8.1"
       inputCustomTag:
         description: "输入自定义Tag名称："
         required: true
@@ -26,6 +34,8 @@ on:
 env:
   gstVer: ${{ github.event.inputs.inputGstVersion }}
   xzVer: ${{ github.event.inputs.inputXzVersion }}
+  xkbcommonVer: ${{ github.event.inputs.inputXkbcommonVersion }}
+  mangohudVer: ${{ github.event.inputs.inputMangohudVersion }}
   customTag: ${{ github.event.inputs.inputCustomTag }}
   # vorbisVer: ${{ github.event.inputs.inputVorbisVersion }}
 
@@ -51,6 +61,7 @@ jobs:
           cat > /tmp/archlinux/tmp/init.sh << EOF
           export gstVer=$gstVer
           export xzVer=$xzVer
+          export xkbcommonVer=$xkbcommonVer
           export customTag=$customTag
           EOF
           # echo "export gstVer=$gstVer" > /tmp/archlinux/tmp/init.sh
@@ -80,8 +91,10 @@ jobs:
           prerelease: false
           tag_name: rootfs-${{ github.event.inputs.inputCustomTag }}
           body: |
-              gstVer=> ${{ github.event.inputs.inputGstVersion }}
-              xzVer=> ${{ github.event.inputs.inputXzVersion }}
+              xz=> ${{ github.event.inputs.inputXzVersion }}
+              gstreamer=> ${{ github.event.inputs.inputGstVersion }}
+              xkbcommon=> ${{ github.event.inputs.inputXkbcommonVersion }}
+              MangoHud=> ${{ github.event.inputs.inputMangohudVersion }}
               customTag=> ${{ github.event.inputs.inputCustomTag }}
 
           files: |
