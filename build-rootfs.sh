@@ -52,7 +52,7 @@ create_rootfs_dir() {
   nowPath=$(pwd)
   rootfsDir=/data/data/com.winlator/files/rootfs/
   for i in ${!RootDirectories[@]}; do
-    mkdir -p $rootfsDir/${a[i]}
+    mkdir -p $rootfsDir/${RootDirectories[i]}
   done
   cd $rootfsDir
   ln -sf usr/bin
@@ -225,7 +225,7 @@ mkdir /tmp/output
 cd /data/data/com.winlator/files/rootfs/
 patchelf_fix
 create_ver_txt
-if ! tar -I 'xz -T$(NPROC)' -cf /tmp/output/output-lite.tar.xz .; then
+if ! tar -I 'xz -T$(nproc)' -cf /tmp/output/output-lite.tar.xz .; then
   exit 1
 fi
 cd /tmp
@@ -233,10 +233,10 @@ tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
 tar -xf tzdata-2025b-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
 create_ver_txt
-if ! tar -I 'xz -T$(NPROC)' -cf /tmp/output/output-full.tar.xz .; then
+if ! tar -I 'xz -T$(nproc)' -cf /tmp/output/output-full.tar.xz .; then
   exit 1
 fi
-rm -rf /data/data/com.winlator/files/rootfs/*/
+rm -rf /data/data/com.winlator/files/rootfs/
 create_rootfs_dir
 tar -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
 tar -xf /tmp/output/output-full.xz -C /data/data/com.winlator/files/rootfs/
@@ -244,6 +244,6 @@ cd /data/data/com.winlator/files/rootfs/
 rm -rf /data/data/com.winlator/files/rootfs/lib/libgst*
 rm -rf /data/data/com.winlator/files/rootfs/lib/gstreamer-1.0
 create_ver_txt
-if ! tar -I 'zstd -T$(NPROC)' -cf /tmp/output/rootfs.tzst .; then
+if ! tar -I 'zstd -T$(nproc)' -cf /tmp/output/rootfs.tzst .; then
   exit 1
 fi
