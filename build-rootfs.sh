@@ -85,7 +85,7 @@ if ! git clone -b $gstVer https://github.com/GStreamer/gstreamer.git gst-src; th
   exit 1
 fi
 
-git clone -b $xkbcommonVer https://github.com/xkbcommon/libxkbcommon.git xkbcomon-src || exit 1
+git clone -b $xkbcommonVer https://github.com/xkbcommon/libxkbcommon.git xkbcommon-src || exit 1
 
 git clone -b $mangohudVer https://github.com/flightlessmango/MangoHud.git mangohud-src || exit 1
 
@@ -95,6 +95,9 @@ cd /tmp/xkbcommon-src
 
 meson setup builddir \
   -Denable-xkbregistry=false \
+  -Denable-bash-completion=false \
+  -Denable-wayland=false \
+  -Denable-tools=false \
   -Denable-bash-completion=false \
   --prefix=/data/data/com.winlator/files/rootfs/
 meson compile -C builddir || exit 1
@@ -107,11 +110,10 @@ meson setup builddir \
   -Dwith_xnvctrl=disabled \
   -Dwith_wayland=disabled \
   -Dwith_nvml=disabled \
-  -Dinclude_doc=false
---prefix=/data/data/com.winlator/files/rootfs/ || exit 1
+  -Dinclude_doc=false \
+  --prefix=/data/data/com.winlator/files/rootfs/ || exit 1
 meson compile -C builddir || exit 1
 meson install -C builddir
-
 # Build
 echo "Build and Compile xz(liblzma)"
 cd /tmp/xz-src
