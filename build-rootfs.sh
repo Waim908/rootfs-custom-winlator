@@ -1,3 +1,4 @@
+export TZ=Asia/Shanghai
 export RootDirectories=(
   etc
   home
@@ -6,13 +7,19 @@ export RootDirectories=(
   opt
   tmp
   var
-  share
-  var
   usr/bin
   usr/lib
   usr/share
   usr/local
 )
+apply_patch() {
+  for i in `ls /tmp/patches/$1/$2`; do
+    if ! patch -p1 < /tmp/patches/$1/$2/$i; then
+      echo "Apply $i for $1/$2 failed"
+      exit 1
+    fi
+  done
+}
 patchelf_fix() {
   LD_RPATH=/data/data/com.winlator/files/rootfs/lib
   LD_FILE=$LD_RPATH/ld-linux-aarch64.so.1
@@ -57,6 +64,7 @@ create_rootfs_dir() {
   cd $rootfsDir
   ln -sf usr/bin
   ln -sf usr/lib
+  ln -sf usr/share
   cd $nowPath
 }
 create_rootfs_dir
@@ -96,6 +104,7 @@ cd /tmp/xkbcommon-src
 meson setup builddir \
   --buildtype=release \
   --strip \
+  -Dbash-completion-path=false \
   -Denable-xkbregistry=false \
   -Denable-wayland=false \
   -Denable-tools=false \
@@ -106,9 +115,12 @@ meson install -C builddir
 
 cd /tmp/mangohud-src
 
+apply_patch mangohud $mangohudVer
+
 meson setup builddir \
   --buildtype=release \
   --strip \
+  -Ddynamic_string_tokens=false \
   -Dwith_xnvctrl=disabled \
   -Dwith_wayland=disabled \
   -Dwith_nvml=disabled \

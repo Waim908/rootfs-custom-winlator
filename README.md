@@ -42,6 +42,7 @@ cmake .. \
 FLAC与OPUS均可以通过libav代替
 
 ## gstreamer
+
 ```bash
 meson setup builddir \
   --buildtype=release \
@@ -156,10 +157,11 @@ bilibili:
 
 # 感谢
 
-使用b站大佬的修改版本来进行测试=>[hostei2](https://space.bilibili.com/39433311)
+[hostei2-winlator修改版，支持终端方便调试](https://space.bilibili.com/39433311)
 
 [winlator](https://github.com/brunodev85/Winlator)
 
+[termux-package](https://github.com/termux/termux-packages)
 
 # 补全使用的项目
 
