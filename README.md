@@ -133,6 +133,9 @@ depend =>
 meson setup builddir \
   -Denable-xkbregistry=false \
   -Denable-bash-completion=false \
+  -Denable-wayland=false \
+  -Denable-tools=false \
+  -Denable-bash-completion=false \
   --prefix=/data/data/com.winlator/files/rootfs/
 ```
 
