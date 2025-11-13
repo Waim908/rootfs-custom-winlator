@@ -97,6 +97,7 @@ fi
 #tar -xf tzdata-*-.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/etc
 mkdir ca-certificates
+cd ca-certificates
 if ! wget https://curl.haxx.se/ca/cacert.pem; then
   exit 1
 fi
