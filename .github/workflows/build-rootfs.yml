@@ -55,7 +55,7 @@ jobs:
           mv rootfs-custom-winlator/tzdata-2025b-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
           mv rootfs-custom-winlator/patches /tmp/archlinux/tmp
           mv rootfs-custom-winlator/mangohud.tar.xz /tmp/archlinux/tmp
-          mv rootfs-custom-winlator/fonts.tar.xz /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/fonts /tmp/archlinux/tmp
           sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
           # sudo chmod 777 /tmp/archlinux/tmp
           # cd /tmp/archlinux/tmp

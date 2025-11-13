@@ -93,15 +93,15 @@ create_rootfs_dir() {
 }
 create_rootfs_dir
 cd /tmp
-if [[ -f fonts.tar.xz ]]; then
-  tar xf fonts.tar.xz -C /data/data/com.winlator/files/rootfs/usr/share
+if [[ -d fonts ]]; then
+  cp -r -p fonts /data/data/com.winlator/files/rootfs/usr/share
   if [[ -d /data/data/com.winlator/files/rootfs/usr/share/fonts ]]; then
     echo "fonts install finsh"
   else
     echo "fonts install failed"
   fi
 else
-  echo "fonts.tar.xz no such file"
+  echo "fonts no such dir"
 fi
 if ! wget https://github.com/Waim908/rootfs-custom-winlator/releases/download/ori-b11.0/rootfs.tzst; then
   exit 1
