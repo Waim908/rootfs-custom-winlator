@@ -45,7 +45,7 @@ apply_patch() {
   fi
 }
 patchelf_fix() {
-  LD_RPATH=/data/data/com.winlator/files/rootfs/lib
+  LD_RPATH=/data/data/com.winlator/files/rootfs/usr/lib
   LD_FILE=$LD_RPATH/ld-linux-aarch64.so.1
   find . -type f -exec file {} + | grep -E ":.*ELF" | cut -d: -f1 | while read -r elf_file; do
     echo "Patching $elf_file..."
@@ -93,6 +93,16 @@ create_rootfs_dir() {
 }
 create_rootfs_dir
 cd /tmp
+if [[ -f fonts.tar.xz ]]; then
+  tar xf fonts.tar.xz -C /data/data/com.winlator/files/rootfs/usr/share
+  if [[ -d /data/data/com.winlator/files/rootfs/usr/share/fonts ]]; then
+    echo "fonts install finsh"
+  else
+    echo "fonts install failed"
+  fi
+else
+  echo "fonts.tar.xz no such file"
+fi
 if ! wget https://github.com/Waim908/rootfs-custom-winlator/releases/download/ori-b11.0/rootfs.tzst; then
   exit 1
 fi
@@ -120,7 +130,11 @@ fi
 
 git clone -b $xkbcommonVer https://github.com/xkbcommon/libxkbcommon.git xkbcommon-src || exit 1
 
-git clone -b $mangohudVer https://github.com/flightlessmango/MangoHud.git mangohud-src || exit 1
+if [[ ! $mangohudVer == cmod ]]; then
+  git clone -b $mangohudVer https://github.com/flightlessmango/MangoHud.git mangohud-src || exit 1
+else
+  echo "Use Winlator Glibc mangohud"
+fi
 
 pip install mako --break-system-package
 
@@ -137,16 +151,25 @@ meson install -C builddir
 
 cd /tmp/mangohud-src
 
-apply_patch mangohud $mangohudVer
+if [[ ! $mangohudVer == cmod ]]; then
+  apply_patch mangohud $mangohudVer
 
-meson setup builddir ${meson_general_arg[@]} \
-  -Ddynamic_string_tokens=false \
-  -Dwith_xnvctrl=disabled \
-  -Dwith_wayland=disabled \
-  -Dwith_nvml=disabled \
-  -Dinclude_doc=false || exit 1
-meson compile -C builddir || exit 1
-meson install -C builddir
+  meson setup builddir ${meson_general_arg[@]} \
+    -Ddynamic_string_tokens=false \
+    -Dwith_xnvctrl=disabled \
+    -Dwith_wayland=disabled \
+    -Dwith_nvml=disabled \
+    -Dinclude_doc=false || exit 1
+  meson compile -C builddir || exit 1
+  meson install -C builddir
+else
+  if [[ -f /tmp/mangohud.tar.xz ]]; then
+    tar xf /tmp/mangohud.tar.xz -C /data/data/com.winlator/files/rootfs/ || exit 1
+  else
+    echo "/tmp/mangohud.tar.xz No such file"
+    exit 1
+  fi
+fi
 # Build
 echo "Build and Compile xz(liblzma)"
 cd /tmp/xz-src

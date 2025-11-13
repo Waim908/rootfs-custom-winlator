@@ -25,7 +25,7 @@ on:
       inputMangohudVersion:
         description: "请输入MangoHud版本："
         required: true
-        default: "v0.8.1"
+        default: "cmod"
       inputCustomTag:
         description: "输入自定义Tag名称："
         required: true
@@ -53,7 +53,9 @@ jobs:
           sudo cp rootfs-custom-winlator/build-rootfs.sh /tmp/archlinux/bin
           mv rootfs-custom-winlator/data.tar.xz /tmp/archlinux/tmp
           mv rootfs-custom-winlator/tzdata-2025b-1-aarch64.pkg.tar.xz /tmp/archlinux/tmp
-          mv rootfs-custom-winlator/patches  /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/patches /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/mangohud.tar.xz /tmp/archlinux/tmp
+          mv rootfs-custom-winlator/fonts.tar.xz /tmp/archlinux/tmp
           sudo chmod +x /tmp/archlinux/bin/build-rootfs.sh
           # sudo chmod 777 /tmp/archlinux/tmp
           # cd /tmp/archlinux/tmp

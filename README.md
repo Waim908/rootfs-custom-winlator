@@ -18,6 +18,24 @@ Any modified third-party versions of Winlator distributed (i.e., distribution ve
 
 然后你就可以愉快的启动容器来测试解码效果了
 
+# 关于Mangohud
+
+在容器设置环境变量
+
+```MANGOHUD```
+- ```1```
+
+```MANGOHUD_CONFIG```
+- ```engine_version,fps,frametime,ram,version,vulkan_driver,present_mode,arch```
+
+经过测试Mangohud的8.1版本与7.2版本均以闪退失败告终，不推荐再去构建编译mangohud了，除非有修复补丁，这里可以使用cmod版本的[mangohud Cmod](https://github.com/coffincolors/winlator/releases/tag/winlator_mangohud_glibc_v1)修改一下路径就行
+
+由于这个Mangohud版本没有开源任何代码且版本号已经被改🤔，故无法确认属于哪个版本，只能大致判断在0.8版本以下。
+
+**此版本的HUD UI界面存在闪烁行为，可能只出现在部分设备上，无法确认原因，在glibc7.1.x版本似乎不会出现这个问题**
+
+如果有解决方案可以提交拉取请求，把补丁放在patches文件夹
+
 # Gstreamer解码调试
 
 声明变量```GST_DEBUG```值为```4```，如果没有输出则是调用其他解码，请在调试中✓上```quartz```,```mfplat```或```dxva2```
@@ -165,6 +183,10 @@ bilibili:
 
 # 补全使用的项目
 
+#### 软件
+
+[mangohud Cmod](https://github.com/coffincolors/winlator/releases/tag/winlator_mangohud_glibc_v1)
+
 [gstreamer](https://github.com/GStreamer/gstreamer)
 
 [MangoHud](https://github.com/flightlessmango/MangoHud)
@@ -172,3 +194,9 @@ bilibili:
 [xz](https://github.com/tukaani-project/xz)
 
 [xkbcommon](https://github.com/xkbcommon/libxkbcommon)
+
+#### 字体(winlator高版本强制注册Fontlink无需修改注册表)
+
+[msyh/simsun](https://github.com/CroesusSo/msyh)
+
+[msyh](https://github.com/fernvenue/microsoft-yahei/tree/master)
