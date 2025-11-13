@@ -93,16 +93,6 @@ create_rootfs_dir() {
 }
 create_rootfs_dir
 cd /tmp
-if [[ -d fonts ]]; then
-  cp -r -p fonts /data/data/com.winlator/files/rootfs/usr/share
-  if [[ -d /data/data/com.winlator/files/rootfs/usr/share/fonts ]]; then
-    echo "fonts install finsh"
-  else
-    echo "fonts install failed"
-  fi
-else
-  echo "fonts no such dir"
-fi
 if ! wget https://github.com/Waim908/rootfs-custom-winlator/releases/download/ori-b11.0/rootfs.tzst; then
   exit 1
 fi
@@ -280,25 +270,35 @@ mkdir /tmp/output
 cd /data/data/com.winlator/files/rootfs/
 patchelf_fix
 create_ver_txt
-if ! tar -I 'xz -T$(nproc)' -cf /tmp/output/output-lite.tar.xz .; then
+if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-lite.tar.xz .; then
   exit 1
 fi
 cd /tmp
 tar -xf data.tar.xz -C /data/data/com.winlator/files/rootfs/
 tar -xf tzdata-2025b-1-aarch64.pkg.tar.xz -C /data/data/com.winlator/files/rootfs/
+if [[ -d fonts ]]; then
+  cp -r -p fonts /data/data/com.winlator/files/rootfs/usr/share
+  if [[ -d /data/data/com.winlator/files/rootfs/usr/share/fonts ]]; then
+    echo "fonts install finsh"
+  else
+    echo "fonts install failed"
+  fi
+else
+  echo "fonts no such dir"
+fi
 cd /data/data/com.winlator/files/rootfs/
 create_ver_txt
-if ! tar -I 'xz -T$(nproc)' -cf /tmp/output/output-full.tar.xz .; then
+if ! tar -I 'xz -T$(nproc) -9' -cf /tmp/output/output-full.tar.xz .; then
   exit 1
 fi
 cd /tmp
 rm -rf /data/data/com.winlator/files/rootfs/
 create_rootfs_dir
 tar -xf rootfs.tzst -C /data/data/com.winlator/files/rootfs/
-tar -xf /tmp/output/output-full.tar.xz -C /data/data/com.winlator/files/rootfs/
 cd /data/data/com.winlator/files/rootfs/
 rm -rf /data/data/com.winlator/files/rootfs/lib/libgst*
 rm -rf /data/data/com.winlator/files/rootfs/lib/gstreamer-1.0
+tar -xf /tmp/output/output-full.tar.xz -C /data/data/com.winlator/files/rootfs/
 create_ver_txt
 if ! tar -I 'zstd -T$(nproc) -9' -cf /tmp/output/rootfs.tzst .; then
   exit 1

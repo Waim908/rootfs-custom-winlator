@@ -1,5 +1,15 @@
 # rootfs-custom-winlator
-winlator 11 定制版rootfs
+
+winlator 11 定制版rootfs，这是一个用于补全原版winlator的项目，适用于所有修改版本与原版。
+
+# 目录
+
+- [使用](#use)
+- [编码](#locale)
+- [MangoHud](#mangohud)
+- [Gstreamer](#gstreamer)
+- [构建参数](#configure_arg)
+- [其他](#others)
 
 # 声明
 
@@ -7,9 +17,11 @@ winlator 11 定制版rootfs
 
 Any modified third-party versions of Winlator distributed (i.e., distribution versions not for personal use) must declare the link to this repository upon release or within the application after incorporating files related to this project, in order to facilitate fixes.
 
+<a id='use'></a>
+
 # 使用
 
-无论你使用任何修改版本（Winlator 11 beta+ 其他版本未测试），只需要替换掉apk包assets文件夹内的```rootfs.tzst```文件就能享受相比于原版更好的解码效果，如果你不想破坏改版的rootfs结构，请自行解包并解压此仓库Releases的```output-full.tar.xz```(包含了完整的时区文件与所有语言的utf-8编码，但可能没有GBK之类的**特定语言编码**) 或者```output-lite.tar.xz```（不再包含编码与时区文件）到rootfs，然后再使用```zstd```来压缩为rootfs.tzst并自行添加到apk里面
+无论你使用任何修改版本（Winlator 11 beta+ 其他版本未测试），只需要替换掉apk包assets文件夹内的```rootfs.tzst```文件就能享受相比于原版更好的解码效果，如果你不想破坏改版的rootfs结构，请自行解包并解压此仓库Releases的```output-full.tar.xz```(包含了完整的时区文件与所有语言的utf-8编码) 或者```output-lite.tar.xz```（不再包含编码与时区文件）到rootfs，然后再使用```zstd```来压缩为rootfs.tzst并自行添加到apk里面
 
 安装完成后无需重装(除非你重新签名导致安装包发生冲突)
 在Winlator主界面，点击左上角菜单，⚙️设置(Setting)=> 滑动到页面最底部=> 重新安装文件系统(Reinstall System Files) => 等待进度条跑完 => 完成！😄
@@ -17,6 +29,14 @@ Any modified third-party versions of Winlator distributed (i.e., distribution ve
 可能需要创建一个容器进行测试，要不然貌似不会创建libGL.so.1的链接
 
 然后你就可以愉快的启动容器来测试解码效果了
+
+<a id='locale'></a>
+
+# 关于编码
+
+现在所有语言的支持与对应编码支持均已完善，你可以通过设置变量```LC_ALL```，值为对应语言的变量值例如```zh_CN.UTF-8```
+
+<a id='locale'></a>
 
 # 关于Mangohud
 
@@ -36,6 +56,8 @@ Any modified third-party versions of Winlator distributed (i.e., distribution ve
 
 如果有解决方案可以提交拉取请求，把补丁放在patches文件夹
 
+<a id='gstreamer'></a>
+
 # Gstreamer解码调试
 
 声明变量```GST_DEBUG```值为```4```，如果没有输出则是调用其他解码，请在调试中✓上```quartz```,```mfplat```或```dxva2```
@@ -44,19 +66,10 @@ Any modified third-party versions of Winlator distributed (i.e., distribution ve
 
 对于unityH264游戏，经过测试此版本已经可以相当流畅的播放和解码h264视频而不出现卡顿卡死或者黑屏现象，包括*声音*也是正常的，但是在此之前你必须使用原版自带的wine并在环境变量设置里启用```WINE_DO_NOT_CREATE_DXGI_DEVICE_MANAGER```这个变量，如果没有请自行添加，值为**1**，此变量只存在原版和应用相关补丁的wine，请关注我的[**wine-winlator**](https://github.com/Waim908/wine-winlator)仓库，后续会推出相应的版本
 
+<a id='configure_arg'></a>
+
 # 参数
 
-<!-- ### FLAC
-```bash
-cmake .. \
--Dprefix=/data/data/com.winlator/files/rootfs/ \
--DBUILD_PROGRAMS=off \
--DBUILD_EXAMPLES=off \
--DBUILD_TESTING=off \
--DBUILD_DOCS=off \
--DBUILD_SHARED_LIBS=on \
--DINSTALL_MANPAGES=off
-``` -->
 FLAC与OPUS均可以通过libav代替
 
 ## gstreamer
@@ -156,6 +169,8 @@ meson setup builddir \
   -Denable-bash-completion=false \
   --prefix=/data/data/com.winlator/files/rootfs/
 ```
+
+<a id='others'></a>
 
 # CA证书支持
 
